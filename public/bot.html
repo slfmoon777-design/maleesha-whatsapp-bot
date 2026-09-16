@@ -1,0 +1,642 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Maleesha Bandara | Manage Bot</title>
+
+    <style>
+        
+/* CONTACT & SOCIAL MEDIA */
+
+.contact-social {
+    padding: 80px 20px;
+    text-align: center;
+    background: linear-gradient(135deg, #0b0618, #1a0d35);
+}
+
+.contact-social h2 {
+    font-size: 36px;
+    color: #ffffff;
+    margin-bottom: 15px;
+}
+
+.contact-social p {
+    color: #b9add5;
+    margin-bottom: 35px;
+}
+
+.social-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.social-buttons a {
+    text-decoration: none;
+    color: white;
+    padding: 14px 25px;
+    border-radius: 10px;
+    background: #6c3cff;
+    transition: 0.3s;
+    font-weight: 600;
+}
+
+.social-buttons a:hover {
+    background: #9b75ff;
+    transform: translateY(-4px);
+}
+
+.contact-email {
+    margin-top: 30px;
+    color: #ffffff;
+}
+
+.contact-email a {
+    color: #a98bff;
+    text-decoration: none;
+}
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            color: white;
+            background:
+                radial-gradient(circle at 15% 20%, rgba(124,58,237,.25), transparent 30%),
+                radial-gradient(circle at 85% 75%, rgba(192,38,211,.20), transparent 30%),
+                #07030d;
+        }
+
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            filter: blur(110px);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        body::before {
+            top: -150px;
+            left: -120px;
+            background: rgba(139,92,246,.18);
+        }
+
+        body::after {
+            right: -150px;
+            bottom: -150px;
+            background: rgba(217,70,239,.18);
+        }
+
+        header {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            padding: 0 35px;
+            background: rgba(8,5,15,.85);
+            border-bottom: 1px solid rgba(168,85,247,.3);
+            backdrop-filter: blur(18px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 13px;
+            background: linear-gradient(135deg,#7c3aed,#c026d3);
+            box-shadow: 0 0 25px rgba(168,85,247,.5);
+            font-size: 22px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 55px auto;
+            padding: 0 25px;
+        }
+
+        .brand {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 58px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            background: linear-gradient(
+                90deg,
+                #7c3aed,
+                #e879f9,
+                white,
+                #c026d3
+            );
+            background-size: 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 5s linear infinite;
+            filter: drop-shadow(0 0 20px rgba(168,85,247,.6));
+        }
+
+        .brand p {
+            color: #a99bb5;
+            letter-spacing: 4px;
+            font-size: 11px;
+        }
+
+        @keyframes shine {
+            from {
+                background-position: 0%;
+            }
+
+            to {
+                background-position: 300%;
+            }
+        }
+
+        .back {
+            color: #c084fc;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back:hover {
+            color: white;
+        }
+
+        .title {
+            margin: 25px 0 30px;
+        }
+
+        .title h2 {
+            font-size: 40px;
+            margin: 0;
+            background: linear-gradient(90deg,white,#c084fc,#e879f9);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .title p,
+        .description {
+            color: #91859d;
+            line-height: 1.6;
+        }
+
+        .card {
+            padding: 28px;
+            margin-bottom: 22px;
+            border-radius: 22px;
+            background: rgba(18,9,29,.8);
+            border: 1px solid rgba(168,85,247,.25);
+            backdrop-filter: blur(18px);
+            box-shadow: 0 15px 50px rgba(0,0,0,.25);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            font-size: 21px;
+        }
+
+        .name-box {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        input {
+            flex: 1;
+            min-width: 0;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(168,85,247,.35);
+            outline: none;
+            background: rgba(5,2,10,.85);
+            color: white;
+            font-size: 15px;
+        }
+
+        input:focus {
+            border-color: #a855f7;
+            box-shadow: 0 0 20px rgba(168,85,247,.25);
+        }
+
+        button {
+            border: none;
+            cursor: pointer;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 11px;
+            padding: 14px 20px;
+            transition: .25s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        .save,
+        .connect {
+            background: linear-gradient(135deg,#7c3aed,#c026d3);
+            box-shadow: 0 0 22px rgba(168,85,247,.3);
+        }
+
+        .status-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px;
+            border-radius: 15px;
+            background: rgba(7,3,13,.65);
+            border: 1px solid rgba(168,85,247,.2);
+        }
+
+        .status-dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: #a855f7;
+            box-shadow: 0 0 15px #a855f7;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            50% {
+                opacity: .4;
+                transform: scale(.75);
+            }
+        }
+
+        .status-text strong {
+            display: block;
+        }
+
+        .status-text span {
+            display: block;
+            margin-top: 5px;
+            color: #91859d;
+            font-size: 13px;
+        }
+
+        .setup-box {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(7,3,13,.7);
+            border: 1px solid rgba(168,85,247,.25);
+        }
+
+        .setup {
+            margin-top: 10px;
+            background: rgba(124,58,237,.2);
+            border: 1px solid rgba(168,85,247,.4);
+        }
+
+        .bot-id {
+            padding: 16px;
+            margin-top: 15px;
+            border-radius: 12px;
+            background: rgba(5,2,10,.8);
+            color: #c4b5fd;
+            word-break: break-all;
+            font-family: monospace;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #62566d;
+            font-size: 13px;
+        }
+
+        @media (max-width: 650px) {
+            header {
+                padding: 0 18px;
+            }
+
+            .container {
+                margin-top: 35px;
+            }
+
+            .brand h1 {
+                font-size: 38px;
+            }
+
+            .title h2 {
+                font-size: 32px;
+            }
+
+            .name-box {
+                flex-direction: column;
+            }
+
+            .save {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<section class="contact-social" id="contact">
+
+    <h2>Contact & Social Media</h2>
+
+    <p>
+        Connect with Maleesha Bandara through social media.
+    </p>
+
+    <div class="social-buttons">
+
+        <a href="#" onclick="showSocialNotice('Instagram')">
+            Instagram
+        </a>
+
+        <a href="#" onclick="showSocialNotice('Facebook')">
+            Facebook
+        </a>
+
+        <a href="#" onclick="showSocialNotice('TikTok')">
+            TikTok
+        </a>
+
+        <a href="#" onclick="showSocialNotice('YouTube')">
+            YouTube
+        </a>
+
+    </div>
+
+    <div class="contact-email">
+        Email:
+        <a href="mailto:your-email@example.com">
+            your-email@example.com
+        </a>
+    </div>
+
+</section>
+
+<body>
+
+<header>
+    <div class="logo">
+        <div class="logo-icon">🤖</div>
+        Maleesha Bandara
+    </div>
+</header>
+
+<div class="container">
+
+    <div class="brand">
+        <h1>Maleesha Bandara</h1>
+        <p>WHATSAPP BOT PLATFORM</p>
+    </div>
+
+    <a href="dashboard.html" class="back">
+        ← Back to Dashboard
+    </a>
+
+    <div class="title">
+        <h2>Manage Bot</h2>
+        <p>Configure and connect your WhatsApp bot.</p>
+    </div>
+
+    <div class="card">
+        <h3>⚙️ Bot Settings</h3>
+
+        <p class="description">
+            Change the name of your bot.
+        </p>
+
+        <div class="name-box">
+            <input
+                type="text"
+                id="editBotName"
+                placeholder="Bot name"
+            >
+
+            <button class="save" onclick="updateBotName()">
+                💾 Save Name
+            </button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>📊 Bot Status</h3>
+
+        <div class="status-box">
+            <div class="status-dot"></div>
+
+            <div class="status-text">
+                <strong>Ready</strong>
+                <span>Bot is ready to be configured.</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>📱 WhatsApp Cloud API</h3>
+
+        <p class="description">
+            Connect your bot using the official
+            WhatsApp Business Platform.
+        </p>
+
+        <button class="connect" onclick="connectWhatsApp()">
+            🔗 Connect WhatsApp
+        </button>
+
+        <div id="whatsappSettings" class="setup-box">
+            <h3>🚀 WhatsApp Setup</h3>
+
+            <p class="description">
+                You will need a Meta developer app,
+                WhatsApp Business Account and the
+                required API credentials.
+            </p>
+
+            <button class="setup" onclick="startWhatsAppSetup()">
+                🚀 Open Meta Setup
+            </button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>🆔 Bot Information</h3>
+
+        <p class="description">
+            Your unique bot ID.
+        </p>
+
+        <div class="bot-id" id="botId">
+            Loading...
+        </div>
+    </div>
+
+    <button class="save" onclick="goDashboard()">
+        ← Back to Dashboard
+    </button>
+
+</div>
+
+<footer>
+    Maleesha Bandara • WhatsApp Bot Platform
+</footer>
+
+<script>
+    
+function showSocialNotice(platform) {
+    alert(
+        platform +
+        " link එක තවම add කරලා නැහැ. ඉක්මනින් update කරනවා!"
+    );
+}
+    const params = new URLSearchParams(
+        window.location.search
+    );
+
+    const botId = params.get("id");
+
+    document.getElementById("botId").innerText =
+        botId || "No Bot ID";
+
+
+    // LOAD BOT
+    async function loadBot() {
+
+        if (!botId) {
+            document.getElementById("editBotName").value = "";
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                "/api/bots/" + botId
+            );
+
+            const bot = await response.json();
+
+            if (!response.ok) {
+                alert("❌ Bot not found.");
+                return;
+            }
+
+            document.getElementById("editBotName").value =
+                bot.name || "";
+
+        } catch (error) {
+            console.error(error);
+            alert("❌ Failed to load bot.");
+        }
+    }
+
+
+    // UPDATE BOT NAME
+    async function updateBotName() {
+
+        const newName = document
+            .getElementById("editBotName")
+            .value
+            .trim();
+
+        if (newName === "") {
+            alert("Please enter a bot name.");
+            return;
+        }
+
+        if (!botId) {
+            alert("Bot ID is missing.");
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                "/api/bots/" + botId,
+                {
+                    method: "PUT",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        name: newName
+                    })
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                alert(
+                    data.error ||
+                    "Failed to update bot."
+                );
+
+                return;
+            }
+
+            alert("✅ Bot name updated!");
+
+            loadBot();
+
+        } catch (error) {
+            console.error(error);
+            alert("❌ Server connection error.");
+        }
+    }
+
+
+    // WHATSAPP SETTINGS
+    function connectWhatsApp() {
+
+        document.getElementById(
+            "whatsappSettings"
+        ).style.display = "block";
+    }
+
+
+    // META SETUP
+    function startWhatsAppSetup() {
+
+        window.open(
+            "https://developers.facebook.com/docs/whatsapp/cloud-api/",
+            "_blank"
+        );
+    }
+
+
+    // DASHBOARD
+    function goDashboard() {
+
+        window.location.href = "dashboard.html";
+    }
+
+
+    // LOAD WHEN PAGE OPENS
+    loadBot();
+</script>
+
+</body>
+</html>

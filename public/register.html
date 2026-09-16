@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Maleesha Bandara | Register</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            min-height: 100vh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-family: Arial, sans-serif;
+
+            color: white;
+
+            background:
+                radial-gradient(
+                    circle at 20% 20%,
+                    rgba(124, 58, 237, 0.30),
+                    transparent 30%
+                ),
+
+                radial-gradient(
+                    circle at 80% 80%,
+                    rgba(192, 38, 211, 0.22),
+                    transparent 30%
+                ),
+
+                #07030d;
+
+            overflow: hidden;
+        }
+
+
+        /* Purple glow */
+
+        body::before {
+
+            content: "";
+
+            position: fixed;
+
+            width: 400px;
+
+            height: 400px;
+
+            left: -150px;
+
+            top: -150px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(139, 92, 246, 0.18);
+
+            filter:
+                blur(100px);
+
+            animation:
+                floatOne
+                8s
+                ease-in-out
+                infinite
+                alternate;
+        }
+
+
+        body::after {
+
+            content: "";
+
+            position: fixed;
+
+            width: 400px;
+
+            height: 400px;
+
+            right: -150px;
+
+            bottom: -150px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(217, 70, 239, 0.15);
+
+            filter:
+                blur(100px);
+
+            animation:
+                floatTwo
+                10s
+                ease-in-out
+                infinite
+                alternate;
+        }
+
+
+        @keyframes floatOne {
+
+            from {
+                transform:
+                    translate(0, 0);
+            }
+
+            to {
+                transform:
+                    translate(120px, 100px);
+            }
+        }
+
+
+        @keyframes floatTwo {
+
+            from {
+                transform:
+                    translate(0, 0);
+            }
+
+            to {
+                transform:
+                    translate(-100px, -80px);
+            }
+        }
+
+
+        /* Register card */
+
+        .register-card {
+
+            width: 420px;
+
+            max-width: 90%;
+
+            padding: 35px;
+
+            border-radius: 24px;
+
+            background:
+                rgba(18, 9, 29, 0.82);
+
+            border:
+                1px solid
+                rgba(168, 85, 247, 0.30);
+
+            backdrop-filter:
+                blur(20px);
+
+            box-shadow:
+                0 20px 70px
+                rgba(0, 0, 0, 0.45);
+
+            position: relative;
+
+            z-index: 2;
+
+            animation:
+                cardEnter
+                0.8s
+                ease;
+        }
+
+
+        @keyframes cardEnter {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(25px)
+                    scale(0.97);
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
+        }
+
+
+        /* Logo */
+
+        .logo {
+
+            text-align: center;
+
+            margin-bottom: 30px;
+        }
+
+
+        .brand {
+
+            font-size: 42px;
+
+            font-weight: 900;
+
+            letter-spacing: 3px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #7c3aed,
+                    #a855f7,
+                    #e879f9,
+                    #ffffff,
+                    #a855f7,
+                    #7c3aed
+                );
+
+            background-size:
+                400% auto;
+
+            -webkit-background-clip:
+                text;
+
+            -webkit-text-fill-color:
+                transparent;
+
+            animation:
+                shine
+                5s
+                linear
+                infinite;
+
+            filter:
+                drop-shadow(
+                    0 0 15px
+                    rgba(168, 85, 247, 0.65)
+                );
+        }
+
+
+        @keyframes shine {
+
+            0% {
+                background-position:
+                    0% center;
+            }
+
+            100% {
+                background-position:
+                    400% center;
+            }
+        }
+
+
+        .subtitle {
+
+            color:
+                #96889f;
+
+            font-size:
+                13px;
+
+            letter-spacing:
+                2px;
+
+            margin-top:
+                10px;
+        }
+
+
+        h1 {
+
+            text-align:
+                center;
+
+            font-size:
+                25px;
+
+            margin:
+                0 0 25px;
+        }
+
+
+        /* Inputs */
+
+        .input-group {
+
+            margin-bottom:
+                17px;
+        }
+
+
+        label {
+
+            display:
+                block;
+
+            margin-bottom:
+                8px;
+
+            color:
+                #b9a9c5;
+
+            font-size:
+                13px;
+        }
+
+
+        input {
+
+            width:
+                100%;
+
+            padding:
+                14px 15px;
+
+            border-radius:
+                12px;
+
+            border:
+                1px solid
+                rgba(168, 85, 247, 0.28);
+
+            outline:
+                none;
+
+            background:
+                rgba(5, 2, 10, 0.8);
+
+            color:
+                white;
+
+            font-size:
+                15px;
+
+            transition:
+                0.3s;
+        }
+
+
+        input:focus {
+
+            border-color:
+                #a855f7;
+
+            box-shadow:
+                0 0 22px
+                rgba(168, 85, 247, 0.20);
+        }
+
+
+        input::placeholder {
+
+            color:
+                #665a70;
+        }
+
+
+        /* Register button */
+
+        .register-btn {
+
+            width:
+                100%;
+
+            padding:
+                14px;
+
+            margin-top:
+                8px;
+
+            border:
+                none;
+
+            border-radius:
+                12px;
+
+            color:
+                white;
+
+            font-size:
+                15px;
+
+            font-weight:
+                bold;
+
+            cursor:
+                pointer;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6d28d9,
+                    #a855f7,
+                    #c026d3
+                );
+
+            box-shadow:
+                0 0 25px
+                rgba(168, 85, 247, 0.28);
+
+            transition:
+                0.25s;
+        }
+
+
+        .register-btn:hover {
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 0 35px
+                rgba(168, 85, 247, 0.50);
+        }
+
+
+        .login-link {
+
+            text-align:
+                center;
+
+            margin-top:
+                22px;
+
+            color:
+                #8e8098;
+
+            font-size:
+                14px;
+        }
+
+
+        .login-link a {
+
+            color:
+                #c084fc;
+
+            text-decoration:
+                none;
+
+            font-weight:
+                bold;
+        }
+
+
+        .login-link a:hover {
+
+            color:
+                white;
+        }
+
+
+        #message {
+
+            text-align:
+                center;
+
+            margin-top:
+                15px;
+
+            font-size:
+                14px;
+        }
+
+
+        @media (max-width: 500px) {
+
+            .register-card {
+
+                padding:
+                    27px;
+            }
+
+
+            .brand {
+
+                font-size:
+                    34px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="register-card">
+
+
+        <div class="logo">
+
+            <div class="brand">
+                Maleesha Bandara
+            </div>
+
+            <div class="subtitle">
+                WHATSAPP BOT PLATFORM
+            </div>
+
+        </div>
+
+
+        <h1>
+            Create Account
+        </h1>
+
+
+        <form id="registerForm">
+
+
+            <div class="input-group">
+
+                <label>
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="Enter username"
+                    required
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    Email
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter email"
+                    required
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Create password"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="register-btn"
+            >
+                ✨ Create Account
+            </button>
+
+
+        </form>
+
+
+        <div id="message"></div>
+
+
+        <div class="login-link">
+
+            Already have an account?
+
+            <a href="login.html">
+                Login
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+    <script>
+
+document
+    .getElementById("registerForm")
+    .addEventListener("submit", async function(event) {
+
+        event.preventDefault();
+
+        const username =
+            document
+                .getElementById("username")
+                .value
+                .trim();
+
+        const email =
+            document
+                .getElementById("email")
+                .value
+                .trim();
+
+        const password =
+            document
+                .getElementById("password")
+                .value;
+
+
+        const message =
+            document.getElementById("message");
+
+
+        message.innerText =
+            "Creating account...";
+
+
+        try {
+
+            const response =
+                await fetch("/api/register", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        username: username,
+
+                        email: email,
+
+                        password: password
+
+                    })
+
+                });
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                message.innerText =
+                    "❌ " +
+                    (data.error ||
+                    "Registration failed.");
+
+                return;
+            }
+
+
+            message.innerText =
+                "✅ Account created successfully!";
+
+
+            document
+                .getElementById("registerForm")
+                .reset();
+
+
+            setTimeout(function() {
+
+                window.location.href =
+                    "login.html";
+
+            }, 1500);
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            message.innerText =
+                "❌ Server connection error.";
+
+        }
+
+    });
+
+</script>
+
+
+</body>
+
+</html>
