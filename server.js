@@ -8,17 +8,18 @@ const { MongoClient, ObjectId } = require("mongodb");
 
 const app = express();
 
-// Render සහ localhost දෙකටම වැඩ කරන port එක
+app.set("trust proxy", 1);
+
 const PORT = process.env.PORT || 3000;
 
 // ===============================
-// MongoDB
+// MONGODB
 // ===============================
 
 const uri = process.env.MONGODB_URI;
 
 if (!uri) {
-    console.error("❌ MONGODB_URI is missing from .env");
+    console.error("❌ MONGODB_URI is missing from environment variables.");
     process.exit(1);
 }
 
@@ -28,7 +29,7 @@ let botsCollection;
 let usersCollection;
 
 // ===============================
-// Middleware
+// MIDDLEWARE
 // ===============================
 
 app.use(express.json());
@@ -46,6 +47,7 @@ app.use(
         cookie: {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
             maxAge: 24 * 60 * 60 * 1000
         }
     })
@@ -54,7 +56,7 @@ app.use(
 app.use(express.static("public"));
 
 // ===============================
-// Login Protection
+// LOGIN PROTECTION
 // ===============================
 
 function requireLogin(req, res, next) {
@@ -73,11 +75,7 @@ function requireLogin(req, res, next) {
 
 app.post("/api/register", async (req, res) => {
     try {
-        const {
-            username,
-            email,
-            password
-        } = req.body;
+        const { username, email, password } = req.body;
 
         if (!username || !email || !password) {
             return res.status(400).json({
@@ -100,27 +98,20 @@ app.post("/api/register", async (req, res) => {
             });
         }
 
-        const existingUser =
-            await usersCollection.findOne({
-                $or: [
-                    {
-                        username: cleanUsername
-                    },
-                    {
-                        email: cleanEmail
-                    }
-                ]
-            });
+        const existingUser = await usersCollection.findOne({
+            $or: [
+                { username: cleanUsername },
+                { email: cleanEmail }
+            ]
+        });
 
         if (existingUser) {
             return res.status(400).json({
-                error:
-                    "Username or email already exists."
+                error: "Username or email already exists."
             });
         }
 
-        const hashedPassword =
-            await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = {
             username: cleanUsername,
@@ -129,8 +120,7 @@ app.post("/api/register", async (req, res) => {
             createdAt: new Date()
         };
 
-        const result =
-            await usersCollection.insertOne(newUser);
+        const result = await usersCollection.insertOne(newUser);
 
         res.status(201).json({
             message: "Registration successful!",
@@ -152,63 +142,58 @@ app.post("/api/register", async (req, res) => {
 
 app.post("/api/login", async (req, res) => {
     try {
-        const {
-            email,
-            password
-        } = req.body;
+        const { email, password } = req.body;
 
         if (!email || !password) {
             return res.status(400).json({
-                error:
-                    "Email and password are required."
+                error: "Email and password are required."
             });
         }
 
         const cleanEmail = email.trim().toLowerCase();
 
-        const user =
-            await usersCollection.findOne({
-                email: cleanEmail
-            });
+        const user = await usersCollection.findOne({
+            email: cleanEmail
+        });
 
-        // Password field එක නැත්නම් bcrypt error එක වළක්වයි
         if (!user || !user.password) {
             return res.status(401).json({
-                error:
-                    "Invalid email or password. Please register again."
+                error: "Invalid email or password. Please register again."
             });
         }
 
-        const passwordMatch =
-            await bcrypt.compare(
-                password,
-                user.password
-            );
+        const passwordMatch = await bcrypt.compare(
+            password,
+            user.password
+        );
 
         if (!passwordMatch) {
             return res.status(401).json({
-                error:
-                    "Invalid email or password."
+                error: "Invalid email or password."
             });
         }
 
-        req.session.userId =
-            user._id.toString();
+        req.session.userId = user._id.toString();
+        req.session.username = user.username;
+        req.session.email = user.email;
 
-        req.session.username =
-            user.username;
+        req.session.save((error) => {
+            if (error) {
+                console.error("Session save error:", error);
 
-        req.session.email =
-            user.email;
-
-        res.json({
-            message: "Login successful!",
-
-            user: {
-                id: user._id,
-                username: user.username,
-                email: user.email
+                return res.status(500).json({
+                    error: "Session could not be saved."
+                });
             }
+
+            res.json({
+                message: "Login successful!",
+                user: {
+                    id: user._id,
+                    username: user.username,
+                    email: user.email
+                }
+            });
         });
 
     } catch (error) {
@@ -226,19 +211,22 @@ app.post("/api/login", async (req, res) => {
 
 app.get("/api/me", requireLogin, async (req, res) => {
     try {
-        const user =
-            await usersCollection.findOne(
-                {
-                    _id: new ObjectId(
-                        req.session.userId
-                    )
-                },
-                {
-                    projection: {
-                        password: 0
-                    }
+        if (!ObjectId.isValid(req.session.userId)) {
+            return res.status(401).json({
+                error: "Invalid session."
+            });
+        }
+
+        const user = await usersCollection.findOne(
+            {
+                _id: new ObjectId(req.session.userId)
+            },
+            {
+                projection: {
+                    password: 0
                 }
-            );
+            }
+        );
 
         if (!user) {
             return res.status(401).json({
@@ -276,8 +264,7 @@ app.post("/api/logout", (req, res) => {
         res.clearCookie("connect.sid");
 
         res.json({
-            message:
-                "Logged out successfully."
+            message: "Logged out successfully."
         });
     });
 });
@@ -288,9 +275,7 @@ app.post("/api/logout", (req, res) => {
 
 app.post("/api/bots", requireLogin, async (req, res) => {
     try {
-        const {
-            name
-        } = req.body;
+        const { name } = req.body;
 
         if (!name || !name.trim()) {
             return res.status(400).json({
@@ -300,25 +285,17 @@ app.post("/api/bots", requireLogin, async (req, res) => {
 
         const newBot = {
             name: name.trim(),
-
             description: "",
-
             autoReply: false,
-
             userId: req.session.userId,
-
             createdAt: new Date(),
-
             updatedAt: new Date()
         };
 
-        const result =
-            await botsCollection.insertOne(newBot);
+        const result = await botsCollection.insertOne(newBot);
 
         res.status(201).json({
-            message:
-                "Bot created successfully!",
-
+            message: "Bot created successfully!",
             bot: {
                 _id: result.insertedId,
                 ...newBot
@@ -340,15 +317,14 @@ app.post("/api/bots", requireLogin, async (req, res) => {
 
 app.get("/api/bots", requireLogin, async (req, res) => {
     try {
-        const bots =
-            await botsCollection
-                .find({
-                    userId: req.session.userId
-                })
-                .sort({
-                    createdAt: -1
-                })
-                .toArray();
+        const bots = await botsCollection
+            .find({
+                userId: req.session.userId
+            })
+            .sort({
+                createdAt: -1
+            })
+            .toArray();
 
         res.json(bots);
 
@@ -367,9 +343,7 @@ app.get("/api/bots", requireLogin, async (req, res) => {
 
 app.get("/api/bots/:id", requireLogin, async (req, res) => {
     try {
-        const {
-            id
-        } = req.params;
+        const { id } = req.params;
 
         if (!ObjectId.isValid(id)) {
             return res.status(400).json({
@@ -377,12 +351,10 @@ app.get("/api/bots/:id", requireLogin, async (req, res) => {
             });
         }
 
-        const bot =
-            await botsCollection.findOne({
-                _id: new ObjectId(id),
-
-                userId: req.session.userId
-            });
+        const bot = await botsCollection.findOne({
+            _id: new ObjectId(id),
+            userId: req.session.userId
+        });
 
         if (!bot) {
             return res.status(404).json({
@@ -407,13 +379,8 @@ app.get("/api/bots/:id", requireLogin, async (req, res) => {
 
 app.put("/api/bots/:id", requireLogin, async (req, res) => {
     try {
-        const {
-            id
-        } = req.params;
-
-        const {
-            name
-        } = req.body;
+        const { id } = req.params;
+        const { name } = req.body;
 
         if (!ObjectId.isValid(id)) {
             return res.status(400).json({
@@ -427,22 +394,18 @@ app.put("/api/bots/:id", requireLogin, async (req, res) => {
             });
         }
 
-        const result =
-            await botsCollection.updateOne(
-                {
-                    _id: new ObjectId(id),
-
-                    userId: req.session.userId
-                },
-
-                {
-                    $set: {
-                        name: name.trim(),
-
-                        updatedAt: new Date()
-                    }
+        const result = await botsCollection.updateOne(
+            {
+                _id: new ObjectId(id),
+                userId: req.session.userId
+            },
+            {
+                $set: {
+                    name: name.trim(),
+                    updatedAt: new Date()
                 }
-            );
+            }
+        );
 
         if (result.matchedCount === 0) {
             return res.status(404).json({
@@ -451,8 +414,7 @@ app.put("/api/bots/:id", requireLogin, async (req, res) => {
         }
 
         res.json({
-            message:
-                "Bot updated successfully."
+            message: "Bot updated successfully."
         });
 
     } catch (error) {
@@ -468,90 +430,15 @@ app.put("/api/bots/:id", requireLogin, async (req, res) => {
 // UPDATE BOT SETTINGS
 // ===============================
 
-app.put(
-    "/api/bots/:id/settings",
-    requireLogin,
-    async (req, res) => {
-        try {
-            const {
-                id
-            } = req.params;
-
-            const {
-                name,
-                description,
-                autoReply
-            } = req.body;
-
-            if (!ObjectId.isValid(id)) {
-                return res.status(400).json({
-                    error: "Invalid bot ID."
-                });
-            }
-
-            if (!name || !name.trim()) {
-                return res.status(400).json({
-                    error:
-                        "Bot name is required."
-                });
-            }
-
-            const result =
-                await botsCollection.updateOne(
-                    {
-                        _id: new ObjectId(id),
-
-                        userId: req.session.userId
-                    },
-
-                    {
-                        $set: {
-                            name: name.trim(),
-
-                            description:
-                                description || "",
-
-                            autoReply:
-                                autoReply === true,
-
-                            updatedAt: new Date()
-                        }
-                    }
-                );
-
-            if (result.matchedCount === 0) {
-                return res.status(404).json({
-                    error: "Bot not found."
-                });
-            }
-
-            res.json({
-                message:
-                    "Bot settings saved successfully."
-            });
-
-        } catch (error) {
-            console.error(
-                "Settings error:",
-                error
-            );
-
-            res.status(500).json({
-                error: "Server error."
-            });
-        }
-    }
-);
-
-// ===============================
-// DELETE BOT
-// ===============================
-
-app.delete("/api/bots/:id", requireLogin, async (req, res) => {
+app.put("/api/bots/:id/settings", requireLogin, async (req, res) => {
     try {
+        const { id } = req.params;
+
         const {
-            id
-        } = req.params;
+            name,
+            description,
+            autoReply
+        } = req.body;
 
         if (!ObjectId.isValid(id)) {
             return res.status(400).json({
@@ -559,12 +446,64 @@ app.delete("/api/bots/:id", requireLogin, async (req, res) => {
             });
         }
 
-        const result =
-            await botsCollection.deleteOne({
-                _id: new ObjectId(id),
-
-                userId: req.session.userId
+        if (!name || !name.trim()) {
+            return res.status(400).json({
+                error: "Bot name is required."
             });
+        }
+
+        const result = await botsCollection.updateOne(
+            {
+                _id: new ObjectId(id),
+                userId: req.session.userId
+            },
+            {
+                $set: {
+                    name: name.trim(),
+                    description: description || "",
+                    autoReply: autoReply === true,
+                    updatedAt: new Date()
+                }
+            }
+        );
+
+        if (result.matchedCount === 0) {
+            return res.status(404).json({
+                error: "Bot not found."
+            });
+        }
+
+        res.json({
+            message: "Bot settings saved successfully."
+        });
+
+    } catch (error) {
+        console.error("Settings error:", error);
+
+        res.status(500).json({
+            error: "Server error."
+        });
+    }
+});
+
+// ===============================
+// DELETE BOT
+// ===============================
+
+app.delete("/api/bots/:id", requireLogin, async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        if (!ObjectId.isValid(id)) {
+            return res.status(400).json({
+                error: "Invalid bot ID."
+            });
+        }
+
+        const result = await botsCollection.deleteOne({
+            _id: new ObjectId(id),
+            userId: req.session.userId
+        });
 
         if (result.deletedCount === 0) {
             return res.status(404).json({
@@ -573,8 +512,7 @@ app.delete("/api/bots/:id", requireLogin, async (req, res) => {
         }
 
         res.json({
-            message:
-                "Bot deleted successfully."
+            message: "Bot deleted successfully."
         });
 
     } catch (error) {
@@ -586,10 +524,9 @@ app.delete("/api/bots/:id", requireLogin, async (req, res) => {
     }
 });
 
-// =====================================================
+// ===============================
 // WHATSAPP WEBHOOK
-// Official WhatsApp Cloud API webhook foundation
-// =====================================================
+// ===============================
 
 // GET - Webhook verification
 
@@ -598,31 +535,19 @@ app.get("/webhook", (req, res) => {
         process.env.WHATSAPP_VERIFY_TOKEN ||
         "maleesha-md-webhook";
 
-    const mode =
-        req.query["hub.mode"];
+    const mode = req.query["hub.mode"];
+    const token = req.query["hub.verify_token"];
+    const challenge = req.query["hub.challenge"];
 
-    const token =
-        req.query["hub.verify_token"];
-
-    const challenge =
-        req.query["hub.challenge"];
-
-    if (
-        mode === "subscribe" &&
-        token === VERIFY_TOKEN
-    ) {
-        console.log(
-            "✅ WhatsApp Webhook verified!"
-        );
+    if (mode === "subscribe" && token === VERIFY_TOKEN) {
+        console.log("✅ WhatsApp Webhook verified!");
 
         return res
             .status(200)
             .send(challenge);
     }
 
-    console.log(
-        "❌ WhatsApp Webhook verification failed."
-    );
+    console.log("❌ WhatsApp Webhook verification failed.");
 
     res.sendStatus(403);
 });
@@ -631,9 +556,7 @@ app.get("/webhook", (req, res) => {
 
 app.post("/webhook", async (req, res) => {
     try {
-        console.log(
-            "📩 WhatsApp webhook received:"
-        );
+        console.log("📩 WhatsApp webhook received:");
 
         console.log(
             JSON.stringify(
@@ -643,26 +566,10 @@ app.post("/webhook", async (req, res) => {
             )
         );
 
-        /*
-         * Later we will process:
-         *
-         * WhatsApp messages
-         * sender number
-         * message text
-         * bot ID
-         * auto reply settings
-         *
-         * and send replies using the official
-         * WhatsApp Cloud API.
-         */
-
         res.sendStatus(200);
 
     } catch (error) {
-        console.error(
-            "Webhook error:",
-            error
-        );
+        console.error("Webhook error:", error);
 
         res.sendStatus(500);
     }
@@ -676,56 +583,30 @@ async function startServer() {
     try {
         await client.connect();
 
-        console.log(
-            "✅ MongoDB connected successfully!"
-        );
+        console.log("✅ MongoDB connected successfully!");
 
-        const db =
-            client.db("WhatsAppBotDB");
+        const db = client.db("WhatsAppBotDB");
 
-        botsCollection =
-            db.collection("bots");
-
-        usersCollection =
-            db.collection("users");
-
-        // Unique username
+        botsCollection = db.collection("bots");
+        usersCollection = db.collection("users");
 
         await usersCollection.createIndex(
-            {
-                username: 1
-            },
-            {
-                unique: true
-            }
+            { username: 1 },
+            { unique: true }
         );
-
-        // Unique email
 
         await usersCollection.createIndex(
-            {
-                email: 1
-            },
-            {
-                unique: true
-            }
+            { email: 1 },
+            { unique: true }
         );
 
-        console.log(
-            "✅ Database collections ready!"
-        );
+        console.log("✅ Database collections ready!");
 
-        // Render සඳහා 0.0.0.0 භාවිතා කරයි
-
-        app.listen(
-            PORT,
-            "0.0.0.0",
-            () => {
-                console.log(
-                    `🚀 Website running on port ${PORT}`
-                );
-            }
-        );
+        app.listen(PORT, "0.0.0.0", () => {
+            console.log(
+                `🚀 Website running on port ${PORT}`
+            );
+        });
 
     } catch (error) {
         console.error(
