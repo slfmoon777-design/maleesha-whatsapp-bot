@@ -1,175 +1,113 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Maleesha Bandara | Dashboard</title>
 
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap');
-
-        :root {
-            --purple: #9b5cff;
-            --light-purple: #c49aff;
-            --cyan: #00e5ff;
-            --pink: #ff3cac;
-            --bg: #070511;
-            --card: rgba(20, 13, 43, 0.72);
-            --border: rgba(155, 92, 255, 0.3);
-            --text: #f5f0ff;
-            --muted: #a59dbb;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        :root {
+            --red: #ff1744;
+            --light-red: #ff718c;
+            --dark-red: #8f001f;
+            --bg: #050505;
+            --card: rgba(25, 7, 12, .82);
+            --border: rgba(255, 23, 68, .35);
+            --text: #fff;
+            --muted: #bca8ae;
+        }
+
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: Poppins, sans-serif;
             color: var(--text);
             min-height: 100vh;
-            overflow-x: hidden;
-            background: var(--bg);
-        }
-
-        .background {
-            position: fixed;
-            inset: 0;
-            z-index: -3;
-            overflow: hidden;
             background:
-                radial-gradient(circle at 20% 20%, #34106a 0%, transparent 35%),
-                radial-gradient(circle at 80% 80%, #24105c 0%, transparent 35%),
-                #070511;
+                radial-gradient(circle at 10% 10%, #60001955, transparent 35%),
+                radial-gradient(circle at 90% 90%, #ff003322, transparent 35%),
+                #050505;
+            overflow-x: hidden;
         }
 
-        .background::before,
-        .background::after {
+        body::before {
             content: "";
-            position: absolute;
-            width: 450px;
-            height: 450px;
-            border-radius: 50%;
-            filter: blur(90px);
-            opacity: 0.35;
-            animation: floatGlow 14s ease-in-out infinite alternate;
-        }
-
-        .background::before {
-            background: var(--purple);
-            top: -180px;
-            left: -130px;
-        }
-
-        .background::after {
-            background: var(--pink);
-            right: -180px;
-            bottom: -150px;
-            animation-delay: 3s;
-        }
-
-        @keyframes floatGlow {
-            from {
-                transform: translate(0, 0) scale(1);
-            }
-
-            to {
-                transform: translate(100px, 80px) scale(1.3);
-            }
-        }
-
-        .grid {
             position: fixed;
             inset: 0;
             z-index: -2;
-            opacity: 0.13;
+            opacity: .15;
             background-image:
-                linear-gradient(rgba(155, 92, 255, 0.3) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(155, 92, 255, 0.3) 1px, transparent 1px);
-            background-size: 55px 55px;
-            transform: perspective(500px) rotateX(55deg) scale(1.8);
-            transform-origin: bottom;
-            animation: gridMove 18s linear infinite;
+                linear-gradient(#ff174415 1px, transparent 1px),
+                linear-gradient(90deg, #ff174415 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            top: -150px;
+            left: -150px;
+            z-index: -1;
+            border-radius: 50%;
+            background: #ff174433;
+            filter: blur(100px);
+            animation: glowMove 12s ease-in-out infinite alternate;
         }
 
         @keyframes gridMove {
+            from { transform: translateY(0); }
+            to { transform: translateY(50px); }
+        }
+
+        @keyframes glowMove {
+            to { transform: translate(100vw, 70vh); }
+        }
+
+        @keyframes fadeUp {
             from {
-                background-position: 0 0;
-            }
-
-            to {
-                background-position: 0 550px;
-            }
-        }
-
-        .particles {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            border-radius: 50%;
-            background: var(--light-purple);
-            box-shadow: 0 0 12px var(--purple);
-            animation: particleMove linear infinite;
-        }
-
-        @keyframes particleMove {
-            from {
-                transform: translateY(110vh);
                 opacity: 0;
+                transform: translateY(20px);
             }
-
-            15% {
-                opacity: 1;
-            }
-
-            85% {
-                opacity: 1;
-            }
-
             to {
-                transform: translateY(-10vh);
-                opacity: 0;
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
         header {
-            width: 100%;
-            padding: 22px 6%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--border);
-            background: rgba(7, 5, 17, 0.7);
-            backdrop-filter: blur(20px);
             position: sticky;
             top: 0;
             z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 6%;
+            background: #080808dd;
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(20px);
         }
 
         .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 20px;
+            font-family: Orbitron, sans-serif;
+            font-size: 19px;
             font-weight: 800;
             letter-spacing: 2px;
-            color: white;
-            text-shadow:
-                0 0 10px var(--purple),
-                0 0 25px var(--purple);
+            text-shadow: 0 0 20px var(--red);
         }
 
         .logo span {
-            color: var(--cyan);
+            color: var(--red);
         }
 
         .user-area {
@@ -179,94 +117,67 @@
         }
 
         #username {
+            color: var(--light-red);
             font-size: 13px;
-            color: var(--light-purple);
+        }
+
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            transition: .3s;
         }
 
         .logout-btn {
             padding: 9px 18px;
             color: white;
-            background: rgba(255, 60, 172, 0.1);
-            border: 1px solid rgba(255, 60, 172, 0.5);
+            background: #ff174415;
+            border: 1px solid var(--red);
             border-radius: 9px;
-            cursor: pointer;
-            transition: 0.3s;
         }
 
         .logout-btn:hover {
-            background: var(--pink);
-            box-shadow: 0 0 20px rgba(255, 60, 172, 0.5);
+            background: var(--red);
+            box-shadow: 0 0 22px #ff174499;
         }
 
         main {
             width: min(1200px, 90%);
-            margin: 0 auto;
+            margin: auto;
             padding: 45px 0;
         }
 
         .hero {
             margin-bottom: 38px;
-            animation: fadeUp 0.8s ease;
+            animation: fadeUp .8s ease;
         }
 
         .eyebrow {
-            color: var(--cyan);
+            color: var(--red);
             font-size: 12px;
             font-weight: 600;
             letter-spacing: 4px;
             margin-bottom: 13px;
         }
 
-        .hero h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(27px, 5vw, 48px);
-            line-height: 1.3;
-            background: linear-gradient(
-                90deg,
-                #ffffff,
-                #b47aff,
-                #00e5ff,
-                #ffffff
-            );
-            background-size: 250% auto;
+        h1 {
+            font-family: Orbitron, sans-serif;
+            font-size: clamp(26px, 5vw, 48px);
+            line-height: 1.35;
+            background: linear-gradient(90deg, white, #ff5475, white);
+            background-size: 200% auto;
             -webkit-background-clip: text;
-            background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: gradientText 6s linear infinite;
+            animation: textGlow 5s linear infinite;
         }
 
-        @keyframes gradientText {
-            to {
-                background-position: 250% center;
-            }
+        @keyframes textGlow {
+            to { background-position: 200% center; }
         }
 
         .hero p {
-            margin-top: 12px;
             color: var(--muted);
             font-size: 14px;
-        }
-
-        .card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            backdrop-filter: blur(20px);
-            box-shadow:
-                0 10px 40px rgba(0, 0, 0, 0.25),
-                inset 0 1px rgba(255, 255, 255, 0.03);
-            transition:
-                transform 0.3s,
-                border-color 0.3s,
-                box-shadow 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(155, 92, 255, 0.8);
-            box-shadow:
-                0 0 25px rgba(155, 92, 255, 0.13),
-                0 15px 45px rgba(0, 0, 0, 0.3);
+            margin-top: 12px;
         }
 
         .stats {
@@ -276,23 +187,23 @@
             margin-bottom: 28px;
         }
 
-        .stat-card {
-            padding: 25px;
-            position: relative;
-            overflow: hidden;
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            backdrop-filter: blur(18px);
+            box-shadow: 0 10px 35px #0008;
+            transition: .3s;
         }
 
-        .stat-card::after {
-            content: "";
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            right: -45px;
-            top: -45px;
-            border-radius: 50%;
-            background: var(--purple);
-            filter: blur(45px);
-            opacity: 0.4;
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--red);
+            box-shadow: 0 0 25px #ff174433;
+        }
+
+        .stat-card {
+            padding: 25px;
         }
 
         .stat-label {
@@ -302,23 +213,22 @@
         }
 
         .stat-value {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 28px;
+            font-family: Orbitron, sans-serif;
+            font-size: 25px;
             font-weight: 700;
-            color: white;
         }
 
         .stat-value span {
-            color: var(--cyan);
+            color: var(--red);
         }
 
         .section-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 17px;
-            margin-bottom: 18px;
             display: flex;
             align-items: center;
             gap: 10px;
+            font-family: Orbitron, sans-serif;
+            font-size: 17px;
+            margin-bottom: 18px;
         }
 
         .section-title::before {
@@ -326,8 +236,8 @@
             width: 4px;
             height: 22px;
             border-radius: 5px;
-            background: var(--purple);
-            box-shadow: 0 0 15px var(--purple);
+            background: var(--red);
+            box-shadow: 0 0 15px var(--red);
         }
 
         .create-card {
@@ -344,40 +254,36 @@
             width: 100%;
             padding: 14px 16px;
             color: white;
-            background: rgba(5, 3, 15, 0.65);
-            border: 1px solid rgba(155, 92, 255, 0.3);
+            background: #050505aa;
+            border: 1px solid var(--border);
             border-radius: 10px;
             outline: none;
             font-family: inherit;
-            transition: 0.3s;
         }
 
         input:focus {
-            border-color: var(--purple);
-            box-shadow: 0 0 15px rgba(155, 92, 255, 0.2);
+            border-color: var(--red);
+            box-shadow: 0 0 15px #ff174433;
         }
 
         input::placeholder {
-            color: #726985;
+            color: #806b72;
         }
 
         .primary-btn {
             padding: 13px 24px;
             white-space: nowrap;
-            border: none;
-            border-radius: 10px;
             color: white;
-            font-family: inherit;
             font-weight: 600;
-            cursor: pointer;
-            background: linear-gradient(135deg, #7540d9, #a95cff);
-            box-shadow: 0 0 20px rgba(155, 92, 255, 0.2);
-            transition: 0.3s;
+            background: linear-gradient(135deg, var(--dark-red), var(--red));
+            border: 1px solid var(--red);
+            border-radius: 10px;
+            box-shadow: 0 0 15px #ff174433;
         }
 
         .primary-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 0 28px rgba(155, 92, 255, 0.6);
+            box-shadow: 0 0 28px #ff174499;
         }
 
         .bots-grid {
@@ -388,7 +294,7 @@
 
         .bot-card {
             padding: 24px;
-            animation: fadeUp 0.6s ease both;
+            animation: fadeUp .6s ease both;
         }
 
         .bot-top {
@@ -403,39 +309,39 @@
             height: 52px;
             display: grid;
             place-items: center;
-            border-radius: 15px;
             font-size: 25px;
-            background: rgba(155, 92, 255, 0.13);
-            border: 1px solid rgba(155, 92, 255, 0.35);
-            box-shadow: 0 0 20px rgba(155, 92, 255, 0.1);
+            border-radius: 15px;
+            background: #ff174415;
+            border: 1px solid var(--border);
+            box-shadow: 0 0 20px #ff174422;
         }
 
         .status {
             display: flex;
             align-items: center;
             gap: 7px;
-            color: #8dffcb;
+            color: #ff8da3;
             font-size: 11px;
         }
 
         .status-dot {
             width: 7px;
             height: 7px;
-            background: #47ff9c;
             border-radius: 50%;
-            box-shadow: 0 0 10px #47ff9c;
+            background: var(--red);
+            box-shadow: 0 0 10px var(--red);
         }
 
         .bot-name {
-            font-family: 'Orbitron', sans-serif;
+            font-family: Orbitron, sans-serif;
             font-size: 16px;
             margin-bottom: 9px;
             overflow-wrap: anywhere;
         }
 
         .bot-date {
-            font-size: 11px;
             color: var(--muted);
+            font-size: 11px;
             margin-bottom: 22px;
         }
 
@@ -449,42 +355,40 @@
             flex: 1;
             padding: 11px;
             border-radius: 9px;
-            font-family: inherit;
             font-size: 12px;
             font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
         }
 
         .manage-btn {
             color: white;
-            background: rgba(155, 92, 255, 0.16);
-            border: 1px solid rgba(155, 92, 255, 0.5);
+            background: #ff174422;
+            border: 1px solid var(--red);
         }
 
         .manage-btn:hover {
-            background: var(--purple);
-            box-shadow: 0 0 20px rgba(155, 92, 255, 0.4);
+            background: var(--red);
+            box-shadow: 0 0 20px #ff174477;
         }
 
         .delete-btn {
-            color: #ff8fba;
-            background: rgba(255, 60, 172, 0.07);
-            border: 1px solid rgba(255, 60, 172, 0.3);
+            color: #ff8da3;
+            background: #ff17440d;
+            border: 1px solid #ff174455;
         }
 
         .delete-btn:hover {
-            background: rgba(255, 60, 172, 0.2);
-            border-color: var(--pink);
+            background: #8f001f;
+            color: white;
         }
 
-        .empty {
+        .empty,
+        .loading {
+            grid-column: 1 / -1;
             padding: 50px 20px;
             text-align: center;
             color: var(--muted);
-            border: 1px dashed rgba(155, 92, 255, 0.3);
+            border: 1px dashed var(--border);
             border-radius: 18px;
-            grid-column: 1 / -1;
         }
 
         .empty-icon {
@@ -492,39 +396,18 @@
             margin-bottom: 15px;
         }
 
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: var(--light-purple);
-            grid-column: 1 / -1;
-        }
-
         .spinner {
             width: 30px;
             height: 30px;
-            border: 3px solid rgba(155, 92, 255, 0.2);
-            border-top-color: var(--purple);
-            border-radius: 50%;
             margin: 0 auto 15px;
-            animation: spin 0.8s linear infinite;
+            border: 3px solid #ff174433;
+            border-top-color: var(--red);
+            border-radius: 50%;
+            animation: spin .8s linear infinite;
         }
 
         @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            to { transform: rotate(360deg); }
         }
 
         .toast {
@@ -533,16 +416,15 @@
             bottom: 25px;
             max-width: 320px;
             padding: 15px 20px;
-            border-radius: 12px;
-            background: #1d1237;
-            border: 1px solid var(--purple);
             color: white;
-            font-size: 13px;
-            box-shadow: 0 0 25px rgba(155, 92, 255, 0.3);
+            background: #25070e;
+            border: 1px solid var(--red);
+            border-radius: 12px;
+            box-shadow: 0 0 25px #ff174455;
             opacity: 0;
-            pointer-events: none;
             transform: translateY(20px);
-            transition: 0.3s;
+            pointer-events: none;
+            transition: .3s;
             z-index: 20;
         }
 
@@ -557,7 +439,7 @@
             }
 
             .logo {
-                font-size: 14px;
+                font-size: 13px;
             }
 
             #username {
@@ -569,10 +451,7 @@
                 padding: 30px 0;
             }
 
-            .stats {
-                grid-template-columns: 1fr;
-            }
-
+            .stats,
             .bots-grid {
                 grid-template-columns: 1fr;
             }
@@ -585,7 +464,7 @@
                 width: 100%;
             }
 
-            .hero h1 {
+            h1 {
                 font-size: 27px;
             }
         }
@@ -594,10 +473,6 @@
 
 <body>
 
-    <div class="background"></div>
-    <div class="grid"></div>
-    <div class="particles" id="particles"></div>
-
     <header>
         <div class="logo">
             MALEESHA <span>BANDARA</span>
@@ -605,19 +480,14 @@
 
         <div class="user-area">
             <span id="username">Loading...</span>
-
-            <button class="logout-btn" onclick="logout()">
-                Logout
-            </button>
+            <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
     </header>
 
     <main>
 
         <section class="hero">
-            <div class="eyebrow">
-                CONTROL CENTER // 01
-            </div>
+            <div class="eyebrow">CONTROL CENTER // 01</div>
 
             <h1>
                 Welcome to your<br>
@@ -643,7 +513,6 @@
 
             <div class="card stat-card">
                 <div class="stat-label">PLATFORM API</div>
-
                 <div class="stat-value">
                     <span>●</span> ONLINE
                 </div>
@@ -653,9 +522,7 @@
 
         <section class="card create-card">
 
-            <div class="section-title">
-                Create New Bot
-            </div>
+            <div class="section-title">Create New Bot</div>
 
             <div class="create-row">
 
@@ -666,10 +533,7 @@
                     maxlength="80"
                 >
 
-                <button
-                    class="primary-btn"
-                    onclick="createBot()"
-                >
+                <button class="primary-btn" onclick="createBot()">
                     + Create Bot
                 </button>
 
@@ -679,9 +543,7 @@
 
         <section>
 
-            <div class="section-title">
-                Your Bots
-            </div>
+            <div class="section-title">Your Bots</div>
 
             <div class="bots-grid" id="botsList">
 
@@ -699,42 +561,11 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        // ===============================
-        // PARTICLES
-        // ===============================
-
-        const particles = document.getElementById("particles");
-
-        for (let i = 0; i < 45; i++) {
-
-            const particle = document.createElement("div");
-
-            particle.className = "particle";
-
-            particle.style.left = Math.random() * 100 + "%";
-
-            particle.style.animationDuration =
-                8 + Math.random() * 15 + "s";
-
-            particle.style.animationDelay =
-                Math.random() * 15 + "s";
-
-            particle.style.opacity =
-                0.3 + Math.random() * 0.7;
-
-            particles.appendChild(particle);
-        }
-
-        // ===============================
-        // TOAST
-        // ===============================
 
         function showToast(message) {
-
             const toast = document.getElementById("toast");
 
             toast.textContent = message;
-
             toast.classList.add("show");
 
             setTimeout(() => {
@@ -742,29 +573,21 @@
             }, 3000);
         }
 
-        // ===============================
-        // LOGIN CHECK
-        // ===============================
-
         async function checkLogin() {
 
             try {
-
                 const response = await fetch("/api/me", {
                     credentials: "include"
                 });
 
                 if (!response.ok) {
-
                     window.location.href = "login.html";
-
                     return false;
                 }
 
                 const data = await response.json();
 
                 if (data.user) {
-
                     document.getElementById("username").textContent =
                         data.user.username || "User";
                 }
@@ -772,18 +595,11 @@
                 return true;
 
             } catch (error) {
-
-                console.error("Login check error:", error);
-
+                console.error(error);
                 window.location.href = "login.html";
-
                 return false;
             }
         }
-
-        // ===============================
-        // LOAD BOTS
-        // ===============================
 
         async function loadBots() {
 
@@ -803,14 +619,11 @@
                 });
 
                 if (response.status === 401) {
-
                     window.location.href = "login.html";
-
                     return;
                 }
 
                 if (!response.ok) {
-
                     throw new Error("Failed to load bots");
                 }
 
@@ -840,11 +653,8 @@
                 bots.forEach((bot, index) => {
 
                     const card = document.createElement("div");
-
                     card.className = "card bot-card";
-
-                    card.style.animationDelay =
-                        index * 0.08 + "s";
+                    card.style.animationDelay = index * .08 + "s";
 
                     const createdDate = bot.createdAt
                         ? new Date(bot.createdAt).toLocaleDateString()
@@ -855,22 +665,16 @@
                     card.innerHTML = `
                         <div class="bot-top">
 
-                            <div class="bot-icon">
-                                🤖
-                            </div>
+                            <div class="bot-icon">🤖</div>
 
                             <div class="status">
-
-                                <span
-                                    class="status-dot"
+                                <span class="status-dot"
                                     style="${active
                                         ? ""
-                                        : "background:#8b829e;box-shadow:none;"
+                                        : "background:#6d555c;box-shadow:none;"
                                     }">
                                 </span>
-
                                 ${active ? "ACTIVE" : "IDLE"}
-
                             </div>
 
                         </div>
@@ -882,15 +686,8 @@
                         </div>
 
                         <div class="bot-actions">
-
-                            <button class="manage-btn">
-                                Manage
-                            </button>
-
-                            <button class="delete-btn">
-                                Delete
-                            </button>
-
+                            <button class="manage-btn">Manage</button>
+                            <button class="delete-btn">Delete</button>
                         </div>
                     `;
 
@@ -912,7 +709,7 @@
 
             } catch (error) {
 
-                console.error("Load bots error:", error);
+                console.error(error);
 
                 list.innerHTML = `
                     <div class="empty">
@@ -924,93 +721,60 @@
             }
         }
 
-        // ===============================
-        // CREATE BOT
-        // ===============================
-
         async function createBot() {
 
             const input = document.getElementById("botName");
-
             const name = input.value.trim();
 
             if (!name) {
-
                 showToast("Please enter a bot name.");
-
                 return;
             }
 
             try {
 
                 const response = await fetch("/api/bots", {
-
                     method: "POST",
-
                     headers: {
                         "Content-Type": "application/json"
                     },
-
                     credentials: "include",
-
-                    body: JSON.stringify({
-                        name: name
-                    })
+                    body: JSON.stringify({ name })
                 });
 
                 if (response.status === 401) {
-
                     window.location.href = "login.html";
-
                     return;
                 }
 
                 const data = await response.json();
 
                 if (!response.ok) {
-
-                    showToast(
-                        data.error || "Failed to create bot."
-                    );
-
+                    showToast(data.error || "Failed to create bot.");
                     return;
                 }
 
                 input.value = "";
-
                 showToast("Bot created successfully! 🚀");
 
                 await loadBots();
 
             } catch (error) {
-
-                console.error("Create bot error:", error);
-
+                console.error(error);
                 showToast("Server connection failed.");
             }
         }
 
-        // ===============================
-        // MANAGE BOT
-        // ===============================
-
         function manageBot(id) {
-
             window.location.href =
                 "bot.html?id=" + encodeURIComponent(id);
         }
 
-        // ===============================
-        // DELETE BOT
-        // ===============================
-
         async function deleteBot(id) {
 
-            const confirmed = confirm(
-                "Are you sure you want to delete this bot?"
-            );
-
-            if (!confirmed) return;
+            if (!confirm("Are you sure you want to delete this bot?")) {
+                return;
+            }
 
             try {
 
@@ -1023,86 +787,58 @@
                 );
 
                 if (response.status === 401) {
-
                     window.location.href = "login.html";
-
                     return;
                 }
 
                 const data = await response.json();
 
                 if (!response.ok) {
-
-                    showToast(
-                        data.error || "Delete failed."
-                    );
-
+                    showToast(data.error || "Delete failed.");
                     return;
                 }
 
                 showToast("Bot deleted successfully.");
-
                 await loadBots();
 
             } catch (error) {
-
-                console.error("Delete error:", error);
-
+                console.error(error);
                 showToast("Server connection failed.");
             }
         }
 
-        // ===============================
-        // LOGOUT
-        // ===============================
-
         async function logout() {
 
             try {
-
                 await fetch("/api/logout", {
-
                     method: "POST",
-
                     credentials: "include"
                 });
-
             } catch (error) {
-
-                console.error("Logout error:", error);
+                console.error(error);
             }
 
             window.location.href = "login.html";
         }
 
-        // ===============================
-        // ENTER KEY
-        // ===============================
-
         document.getElementById("botName")
             .addEventListener("keydown", function(event) {
-
                 if (event.key === "Enter") {
-
                     createBot();
                 }
             });
-
-        // ===============================
-        // INITIALIZE
-        // ===============================
 
         async function initializeDashboard() {
 
             const loggedIn = await checkLogin();
 
             if (loggedIn) {
-
                 await loadBots();
             }
         }
 
         initializeDashboard();
+
     </script>
 
 </body>
